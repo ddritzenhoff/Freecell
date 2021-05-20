@@ -43,6 +43,7 @@ public class SimpleFreecellModel implements FreecellModel<ICard> {
 
   /**
    * checks to see if the deck is invalid.
+   *
    * @param deck the list of cards making up the deck.
    * @return true if the deck is invlaid and false if the deck is valid.
    */
@@ -123,14 +124,15 @@ public class SimpleFreecellModel implements FreecellModel<ICard> {
 
   /**
    * Gets the correct pile from the three existing piles (Cascade, Open, or Foundation).
-   * @param pile the type of pile to be taken from (Cascade, Open, or Foundation).
+   *
+   * @param pile       the type of pile to be taken from (Cascade, Open, or Foundation).
    * @param pileNumber the index of the pile to get.
    * @return the pile specified by pile (from which pile) and pileNumber (index of the pile).
    * @throws IllegalArgumentException when the specified pile index is out of bounds.
    */
   private IPile<ICard> getCorrectPile(PileType pile, int pileNumber)
       throws IllegalArgumentException {
-    switch(pile) {
+    switch (pile) {
       case OPEN:
         if (pileNumber < 0 || pileNumber >= this.openPiles.size()) {
           throw new IllegalArgumentException("destPileNumber is out of bounds for open pile");
@@ -179,7 +181,7 @@ public class SimpleFreecellModel implements FreecellModel<ICard> {
         return false;
       }
 
-      if(!foundationPile.isPileValid()) {
+      if (!foundationPile.isPileValid()) {
         return false;
       }
     }

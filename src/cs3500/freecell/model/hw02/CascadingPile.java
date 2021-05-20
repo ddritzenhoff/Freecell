@@ -77,13 +77,15 @@ public class CascadingPile implements IPile<ICard> {
 
     ICard oldCard = this.getTopCard();
 
-    if (oldCard.getFace() == toBeAddedCard.getFace() && oldCard.getSuite() == toBeAddedCard.getSuite()) {
+    if (oldCard.getFace() == toBeAddedCard.getFace() && oldCard.getSuite() == toBeAddedCard
+        .getSuite()) {
       return true;
     }
 
     // toBeAddedCard may be added if it is of a different color and is one value less
 
-    return (!toBeAddedCard.sameColor(oldCard) && oldCard.getFaceValue() - toBeAddedCard.getFaceValue() == 1);
+    return (!toBeAddedCard.sameColor(oldCard)
+        && oldCard.getFaceValue() - toBeAddedCard.getFaceValue() == 1);
   }
 
   @Override

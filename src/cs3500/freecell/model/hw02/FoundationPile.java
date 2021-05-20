@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Represents the Foundation pile within the Freecell card game.
  */
-public class FoundationPile implements IPile<ICard>{
+public class FoundationPile implements IPile<ICard> {
 
   private final List<ICard> cards;
 
@@ -36,7 +36,7 @@ public class FoundationPile implements IPile<ICard>{
   }
 
   @Override
-  public void move(IPile<ICard> other) throws IllegalArgumentException{
+  public void move(IPile<ICard> other) throws IllegalArgumentException {
     // At this point, you know that the card can be removed from the deck.
     // You need to make sure that the card can actually make it to the next pile
 
@@ -83,7 +83,8 @@ public class FoundationPile implements IPile<ICard>{
 
     // toBeAddedCard may be added if it is the same color and is one value greater
 
-    return (toBeAddedCard.sameColor(oldCard) && toBeAddedCard.getFaceValue() - oldCard.getFaceValue() == 1);
+    return (toBeAddedCard.sameColor(oldCard)
+        && toBeAddedCard.getFaceValue() - oldCard.getFaceValue() == 1);
   }
 
   @Override

@@ -5,15 +5,16 @@ import java.util.Objects;
 /**
  * Represents a card within the Freecell card game.
  */
-public class Card implements ICard{
+public class Card implements ICard {
 
   private final Suite suite;
   private final Face face;
 
   /**
    * Constructs a {@code Card} object.
+   *
    * @param suite the suite of the card.
-   * @param face the face value of the card.
+   * @param face  the face value of the card.
    */
   public Card(Suite suite, Face face) {
     this.suite = Objects.requireNonNull(suite);
@@ -32,7 +33,9 @@ public class Card implements ICard{
     }
 
     for (Face faceMember : Face.values()) {
-      if (faceMember.equals(this.face)) return isValid;
+      if (faceMember.equals(this.face)) {
+        return isValid;
+      }
     }
 
     return false;
@@ -65,7 +68,7 @@ public class Card implements ICard{
 
     String card_as_str = "";
 
-    switch(this.face) {
+    switch (this.face) {
       case ACE:
         card_as_str += "A";
         break;
@@ -125,7 +128,7 @@ public class Card implements ICard{
       default:
         throw new IllegalStateException("Unexpected value: " + this.suite);
     }
-    
+
     return card_as_str;
   }
 

@@ -11,13 +11,13 @@ public class OpenPile implements IPile<ICard> {
    * Constructs a {@code OpenPile} object.
    */
   public OpenPile() {
-    this.card = new NoCard();
+    this.card = null;
   }
 
   @Override
   public void pushCard(ICard card) {
 
-    if (this.card.isValid()) {
+    if (this.card != null) {
       throw new IllegalStateException("there is already a card here");
     }
 
@@ -27,11 +27,11 @@ public class OpenPile implements IPile<ICard> {
   @Override
   public void popCard() {
 
-    if (!this.card.isValid()) {
+    if (this.card == null) {
       throw new IllegalStateException("there isn't a card to remove");
     }
 
-    this.card = new NoCard(); // null
+    this.card = null;
   }
 
   @Override
@@ -50,14 +50,10 @@ public class OpenPile implements IPile<ICard> {
 
   @Override
   public ICard getCard(int cardIndex) {
+
     if (cardIndex != 0) {
       throw new IllegalArgumentException("the index of the card is invalid");
     }
-
-    if (!this.card.isValid()) {
-      throw new IllegalStateException("there isn't a card to get from getCard");
-    }
-
 
     return this.card;
   }
@@ -65,28 +61,24 @@ public class OpenPile implements IPile<ICard> {
   @Override
   public ICard getTopCard() throws IllegalArgumentException {
 
-    if (!this.card.isValid()) {
-      throw new IllegalStateException("there isn't a card to get from getTopCard");
-    }
-
     return this.card;
 
   }
 
   @Override
   public boolean canBeAdded(ICard toBeAddedCard) {
-    return !this.card.isValid();
+    return this.card != null;
   }
 
   @Override
   public boolean canBeRemoved(int cardIndex) {
-    return cardIndex == 0;
+    return cardIndex == 0 && this.card != null;
   }
 
   @Override
   public int getNumCards() {
 
-    if (this.card.isValid()) {
+    if (this.card != null) {
       return 1;
     }
 
@@ -95,11 +87,11 @@ public class OpenPile implements IPile<ICard> {
 
   @Override
   public boolean isFull() {
-    return this.card.isValid();
+    return this.card != null;
   }
 
   @Override
   public boolean isPileValid() {
-    return this.card.isValid();
+    return this.card != null;
   }
 }
