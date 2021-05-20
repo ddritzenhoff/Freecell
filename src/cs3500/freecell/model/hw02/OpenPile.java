@@ -41,7 +41,7 @@ public class OpenPile implements IPile<ICard> {
     ICard card = this.getTopCard();
 
     if (!other.canBeAdded(card)) {
-      throw new IllegalArgumentException("card cannot be added to the new pile");
+      throw new IllegalArgumentException("card from open pile cannot be added to the new pile");
     }
 
     other.pushCard(card);
@@ -60,14 +60,13 @@ public class OpenPile implements IPile<ICard> {
 
   @Override
   public ICard getTopCard() throws IllegalArgumentException {
-
+    // TODO: consider adding throws statements here and for getCard
     return this.card;
-
   }
 
   @Override
   public boolean canBeAdded(ICard toBeAddedCard) {
-    return this.card != null;
+    return toBeAddedCard.isValid();
   }
 
   @Override

@@ -46,7 +46,7 @@ public interface FreecellModel<K> extends FreecellModelState<K> {
    * the move is valid.
    *
    * @param source         the type of the source pile see @link{PileType}
-   * @param pileNumber     the pile number of the given type, starting at 0
+   * @param pileNumber     he pile number of the given type, starting at 0t
    * @param cardIndex      the index of the card to be moved from the source
    *                       pile, starting at 0
    * @param destination    the type of the destination pile (see

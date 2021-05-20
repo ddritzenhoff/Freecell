@@ -95,6 +95,9 @@ public class SimpleFreecellModel implements FreecellModel<ICard> {
     // At this point, the deck is shuffled
 
     // initialize piles
+    this.cascadePiles.clear();
+    this.foundationPiles.clear();
+    this.openPiles.clear();
 
     // Cascade pile
     for (int ii = 0; ii < numCascadePiles; ii++) {
