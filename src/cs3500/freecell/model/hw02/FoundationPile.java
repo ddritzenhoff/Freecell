@@ -3,10 +3,6 @@ package cs3500.freecell.model.hw02;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: QUESTION: A lot of my methods here are the same as in CascadingPile
-//  can I create an abstract class for the two classes to extend? How would you test
-//  an abstract class?
-
 /**
  * Represents the Foundation pile within the Freecell card game.
  */

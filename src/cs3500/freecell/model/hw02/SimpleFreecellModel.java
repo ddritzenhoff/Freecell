@@ -30,15 +30,17 @@ public class SimpleFreecellModel implements FreecellModel<ICard> {
 
   @Override
   public List<ICard> getDeck() {
-    List<ICard> new_deck = new ArrayList<>();
 
-    for (Suite suite : Suite.values()) {
-      for (Face face : Face.values()) {
-        new_deck.add(new Card(suite, face));
+    List<ICard> newDeck = new ArrayList<>();
+    Face[] faces = Face.values();
+    for (int ii = faces.length - 1; ii >= 0; ii-=1) {
+      for (Suite suite : Suite.values()) {
+        newDeck.add(new Card(suite, faces[ii]));
       }
     }
 
-    return new_deck;
+    return newDeck;
+
   }
 
   /**
@@ -225,7 +227,7 @@ public class SimpleFreecellModel implements FreecellModel<ICard> {
     }
 
     if (index < 0 || index >= this.cascadePiles.size()) {
-      throw new IllegalArgumentException("no such index for the cascade pile exists");
+      throw new IllegalArgumentException("no such index for the cascade pile exists: " + index);
     }
 
     return this.cascadePiles.get(index).getNumCards();
