@@ -33,7 +33,7 @@ public class SimpleFreecellModel implements FreecellModel<ICard> {
 
     List<ICard> newDeck = new ArrayList<>();
     Face[] faces = Face.values();
-    for (int ii = faces.length - 1; ii >= 0; ii-=1) {
+    for (int ii = faces.length - 1; ii >= 0; ii -= 1) {
       for (Suite suite : Suite.values()) {
         newDeck.add(new Card(suite, faces[ii]));
       }

@@ -6,13 +6,14 @@ import cs3500.freecell.model.hw02.Suite;
 import java.util.List;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-// TODO: QUESTION: Do I have to write comments for the methods?
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
- * This respresents all the tests responsible for the testing the methods of
- * the SimpleFreecellClass
+ * This respresents all the tests responsible for the testing the methods of the
+ * SimpleFreecellClass
  */
 public class TestSimpleFreecellClass {
 

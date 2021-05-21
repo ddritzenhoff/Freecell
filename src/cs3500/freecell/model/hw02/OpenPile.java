@@ -60,7 +60,6 @@ public class OpenPile implements IPile<ICard> {
 
   @Override
   public ICard getTopCard() throws IllegalArgumentException {
-    // TODO: consider adding throws statements here and for getCard
     return this.card;
   }
 

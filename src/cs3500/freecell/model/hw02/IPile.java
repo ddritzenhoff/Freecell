@@ -6,6 +6,7 @@ package cs3500.freecell.model.hw02;
  *
  * @param <ICard> The Card type.
  */
+
 public interface IPile<ICard> {
 
   /**
