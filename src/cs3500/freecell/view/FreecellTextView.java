@@ -1,8 +1,10 @@
 package cs3500.freecell.view;
 
 import cs3500.freecell.model.FreecellModel;
-import cs3500.freecell.model.hw02.SimpleFreecellModel;
 
+/**
+ * Represents the ascii view of the card pile within the Freecell card game.
+ */
 public class FreecellTextView implements FreecellView {
 
   FreecellModel<?> model;
@@ -26,23 +28,37 @@ public class FreecellTextView implements FreecellView {
 
     // displaying the foundation pile.
     for (int pileIndex = 0; pileIndex < 4; pileIndex++) {
+      result = result + "F" + (pileIndex + 1) + ":";
+
       for (int cardI = 0; cardI < model.getNumCardsInFoundationPile(pileIndex); cardI++) {
-        result = result + "F" + (pileIndex + 1) + ":" + model.getFoundationCardAt(pileIndex, cardI)
-            .toString() +
-            "\n";
+        result = result + " " + model.getFoundationCardAt(pileIndex, cardI).toString();
+        if (cardI + 1 == model.getNumCardsInFoundationPile(pileIndex)) {
+          result += "\n";
+        }
+        else {
+          result += ",";
+        }
       }
     }
     for (int pileIndex = 0; pileIndex < model.getNumOpenPiles(); pileIndex++) {
-      result =
-          result + "O" + (pileIndex + 1) + ":" + model.getOpenCardAt(pileIndex).toString() + "\n";
+      result = result + "O" + (pileIndex + 1) + ":";
+      if (model.getOpenCardAt(0) != null) {
+        result += " " + model.getOpenCardAt(0).toString() + "\n";
+      } else {
+        result += "\n";
+      }
     }
     for (int pileIndex = 0; pileIndex < model.getNumCascadePiles(); pileIndex++) {
+      result = result + "C" + (pileIndex + 1) + ":";
       for (int cardI = 0; cardI < model.getNumCardsInCascadePile(pileIndex); cardI++) {
-        result = result + "C" + (pileIndex + 1) + ":" + model.getCascadeCardAt(pileIndex, cardI).toString();
-
-        // don't include a return statement on the very last card.
-        if (pileIndex + 1 != model.getNumCascadePiles() && cardI + 1 != model.getNumCardsInCascadePile(pileIndex)) {
-          result = result + "\n";
+        result = result + " " + model.getCascadeCardAt(pileIndex, cardI).toString();
+        if (cardI + 1 == model.getNumCardsInCascadePile(pileIndex)) {
+          if (pileIndex + 1 != model.getNumCascadePiles()) {
+            result += "\n";
+          }
+        }
+        else {
+          result += ",";
         }
       }
     }

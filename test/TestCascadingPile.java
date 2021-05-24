@@ -60,7 +60,9 @@ public class TestCascadingPile {
     IPile<ICard> cpile = new CascadingPile();
     IPile<ICard> opile = new OpenPile();
     cpile.pushCard(card1);
+    assertEquals(1, cpile.getNumCards());
     cpile.move(opile);
+    assertEquals(0, cpile.getNumCards());
   }
 
   @Test(expected = IllegalArgumentException.class)

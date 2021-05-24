@@ -61,7 +61,9 @@ public class TestFoundationPile {
     IPile<ICard> fpile = new FoundationPile();
     IPile<ICard> cpile = new CascadingPile();
     fpile.pushCard(card1);
+    assertEquals(1, fpile.getNumCards());
     fpile.move(cpile);
+    assertEquals(0, fpile.getNumCards());
   }
 
   @Test(expected = IllegalArgumentException.class)

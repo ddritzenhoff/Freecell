@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * This respresents all the tests responsible for the testing the methods of the
- * SimpleFreecellClass
+ * SimpleFreecellClass.
  */
 public class TestSimpleFreecellClass {
 

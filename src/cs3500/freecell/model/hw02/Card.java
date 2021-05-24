@@ -21,6 +21,11 @@ public class Card implements ICard {
     this.face = Objects.requireNonNull(face);
   }
 
+  /**
+   * Determines if the ICard contains valid fields.
+   *
+   * @return true if contains valid fields and false otherwise.
+   */
   public boolean isValid() {
 
     boolean isValid = false;

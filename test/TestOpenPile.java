@@ -58,7 +58,9 @@ public class TestOpenPile {
     IPile<ICard> cpile = new CascadingPile();
     IPile<ICard> opile = new OpenPile();
     opile.pushCard(card1);
+    assertEquals(1, opile.getNumCards());
     opile.move(cpile);
+    assertEquals(0, opile.getNumCards());
   }
 
   @Test(expected = IllegalArgumentException.class)
