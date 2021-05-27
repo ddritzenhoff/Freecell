@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Represents a card within the Freecell card game.
  */
-public class Card implements ICard {
+public final class Card implements ICard {
 
   private final Suite suite;
   private final Face face;
