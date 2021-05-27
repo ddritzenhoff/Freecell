@@ -6,8 +6,8 @@ import cs3500.freecell.model.hw02.ICard;
 import cs3500.freecell.view.FreecellTextView;
 import cs3500.freecell.view.FreecellView;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /*
@@ -65,6 +65,16 @@ public class SimpleFreecellController implements FreecellController<ICard> {
     }
   }
 
+  private String getNext() {
+    String next;
+    try {
+      next = this.sc.next();
+      return next;
+    } catch (NoSuchElementException e) {
+      throw new IllegalStateException("No element available.\n");
+    }
+  }
+
   @Override
   public void playGame(List<ICard> deck, int numCascades, int numOpens, boolean shuffle)
       throws IllegalStateException, IllegalArgumentException {
@@ -99,7 +109,7 @@ public class SimpleFreecellController implements FreecellController<ICard> {
       int destinationPileIndex;
 
       // handling source pile
-      while (!isValidPileInput(info = this.sc.next())) {
+      while (!isValidPileInput(info = getNext())) {
         write("Invalid move. Try again. Source pile is invalid.\n");
       }
 
@@ -113,7 +123,7 @@ public class SimpleFreecellController implements FreecellController<ICard> {
       sourcePileType = getPileType(info.charAt(0));
 
       // handling card index
-      while (!isValidCardIndex(info = this.sc.next())) {
+      while (!isValidCardIndex(info = getNext())) {
         write("Invalid move. Try again. Card index is invalid.\n");
       }
 
@@ -125,7 +135,7 @@ public class SimpleFreecellController implements FreecellController<ICard> {
 
       cardIndex = Integer.parseInt(info) - 1;
 
-      while (!isValidPileInput(info = this.sc.next())) {
+      while (!isValidPileInput(info = getNext())) {
         write("Invalid move. Try again. Destination pile is invalid.\n");
       }
 
@@ -144,8 +154,8 @@ public class SimpleFreecellController implements FreecellController<ICard> {
         this.model.move(sourcePileType, sourcePileIndex, cardIndex, destinationPileType,
             destinationPileIndex);
         // TODO: I don't think I need this.
-//        writeBoard();
-//        write("\n");
+        writeBoard();
+        write("\n");
       } catch (IllegalArgumentException e) {
         write("Invalid move. Try again\n");
       }

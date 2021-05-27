@@ -10,7 +10,7 @@ import java.util.Objects;
 public class FreecellTextView implements FreecellView {
 
   private final FreecellModel<?> model;
-  private final Appendable ap;
+  private Appendable ap;
 
   /**
    * Constructs a FreecellModel object
@@ -18,8 +18,11 @@ public class FreecellTextView implements FreecellView {
    * @param model the FreecellModel game implementation, and the current game state.
    */
   public FreecellTextView(FreecellModel<?> model) {
+    if (model == null) {
+      throw new IllegalArgumentException("Model cannot be null.");
+    }
     this.model = model;
-    this.ap = null;
+    this.ap = System.out;
   }
 
   /**
@@ -27,8 +30,14 @@ public class FreecellTextView implements FreecellView {
    * @param ap    Appendable object to be used in the game rendering.
    */
   public FreecellTextView(FreecellModel<?> model, Appendable ap) {
-    this.model = Objects.requireNonNull(model);
-    this.ap = Objects.requireNonNull(ap);
+    this(model);
+
+    // if the passed in appendable is not valid, you have to print everything to console instead.
+    if (ap == null) {
+      this.ap = System.out;
+    } else {
+      this.ap = ap;
+    }
   }
 
   @Override
@@ -50,32 +59,35 @@ public class FreecellTextView implements FreecellView {
 
       for (int cardI = 0; cardI < model.getNumCardsInFoundationPile(pileIndex); cardI++) {
         result = result + " " + model.getFoundationCardAt(pileIndex, cardI).toString();
-        if (cardI + 1 == model.getNumCardsInFoundationPile(pileIndex)) {
-          result += "\n";
-        } else {
+        if (cardI + 1 != model.getNumCardsInFoundationPile(pileIndex)) {
           result += ",";
         }
       }
+      result += "\n";
     }
     for (int pileIndex = 0; pileIndex < model.getNumOpenPiles(); pileIndex++) {
       result = result + "O" + (pileIndex + 1) + ":";
-      if (model.getOpenCardAt(0) != null) {
-        result += " " + model.getOpenCardAt(0).toString() + "\n";
+      // O1:
+      if (model.getOpenCardAt(pileIndex) != null) {
+        result += " " + model.getOpenCardAt(pileIndex).toString() + "\n";
+        // O1: K♥\n
       } else {
         result += "\n";
+        // O1:/n
       }
     }
     for (int pileIndex = 0; pileIndex < model.getNumCascadePiles(); pileIndex++) {
       result = result + "C" + (pileIndex + 1) + ":";
+
       for (int cardI = 0; cardI < model.getNumCardsInCascadePile(pileIndex); cardI++) {
         result = result + " " + model.getCascadeCardAt(pileIndex, cardI).toString();
-        if (cardI + 1 == model.getNumCardsInCascadePile(pileIndex)) {
-          if (pileIndex + 1 != model.getNumCascadePiles()) {
-            result += "\n";
-          }
-        } else {
+        if (cardI + 1 != model.getNumCardsInCascadePile(pileIndex)) {
           result += ",";
         }
+      }
+
+      if (pileIndex + 1 != model.getNumCascadePiles()) {
+        result += "\n";
       }
     }
 
@@ -84,29 +96,16 @@ public class FreecellTextView implements FreecellView {
 
   @Override
   public void renderBoard() throws IOException {
-    if (this.ap == null) {
-      System.out.println("It seems like the wrong constructor was called\n");
-      System.out.println(this.model.toString());
-      return;
-    }
-
-    this.ap.append(this.model.toString());
+    this.ap.append(toString());
   }
 
   @Override
   public void renderMessage(String message) throws IOException {
     if (message == null) {
-      System.out.println("message is not a valid string");
-    }
-
-    // At this point, the message is not null
-
-    if (this.ap == null) {
-      System.out.println("It seems like the wrong constructor was called\n");
-      System.out.println(message);
       return;
     }
 
+    // At this point, the message is not null
     this.ap.append(message);
   }
 }
