@@ -2,6 +2,9 @@ package cs3500.freecell.view;
 
 import java.io.IOException;
 
+/**
+ * Interface for the freecell game view.
+ */
 public interface FreecellView {
   /**
    * Return the present state of the game as a string. The string is formatted

@@ -10,23 +10,23 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-/*
-NOTES:
-- A valid user input for a move is a sequence of three inputs (separated by spaces or newlines):
-  - I'm pretty sure there can be garbage values in between. It's just important that you find three
-  usable values.
-  - Need a MockFreeCell or you will lose points.
-  - You need to add logic for when the game hasn't ended but there is no 'q'
-  - You will be given tests where you run out of inputs. You need to add logic here too.
-  -
+/**
+ * Freecell game controller. Interacts with the user, model, and view to play the game of freecell.
  */
-
-public class SimpleFreecellController implements FreecellController<ICard> {
+public final class SimpleFreecellController implements FreecellController<ICard> {
 
   private final Scanner sc;
   FreecellModel<ICard> model;
   private final FreecellView view;
 
+  /**
+   * Constructs a SimpleFreecellController object.
+   *
+   * @param model The model to handle all of the card movements/data transformations.
+   * @param rd    A source of characters to inprepret as card moves
+   * @param ap    Holds the game states and the different results from moving.
+   * @throws IllegalArgumentException when any of the inputs are null.
+   */
   public SimpleFreecellController(FreecellModel<ICard> model, Readable rd, Appendable ap)
       throws IllegalArgumentException {
 
@@ -57,6 +57,9 @@ public class SimpleFreecellController implements FreecellController<ICard> {
     }
   }
 
+  /**
+   * Handles adding the game state to the appendable.
+   */
   private void writeBoard() {
     try {
       this.view.renderBoard();
@@ -65,6 +68,11 @@ public class SimpleFreecellController implements FreecellController<ICard> {
     }
   }
 
+  /**
+   * Handles getting the next element from readable.
+   *
+   * @return The string to direct the next move.
+   */
   private String getNext() {
     String next;
     try {
@@ -95,7 +103,6 @@ public class SimpleFreecellController implements FreecellController<ICard> {
 
     while (!this.model.isGameOver()) {
 
-      // TODO: this may not be necessary.
       writeBoard();
       write("\n");
 
@@ -153,7 +160,6 @@ public class SimpleFreecellController implements FreecellController<ICard> {
       try {
         this.model.move(sourcePileType, sourcePileIndex, cardIndex, destinationPileType,
             destinationPileIndex);
-        // TODO: I don't think I need this.
         writeBoard();
         write("\n");
       } catch (IllegalArgumentException e) {
@@ -168,10 +174,22 @@ public class SimpleFreecellController implements FreecellController<ICard> {
 
   }
 
+  /**
+   * Determines whether the user is quitting the game.
+   *
+   * @param input the String input from the Readable object.
+   * @return true if the user is quitting and false otherwise.
+   */
   private boolean quittingGame(String input) {
     return input.equals("q") || input.equals("Q");
   }
 
+  /**
+   * Determines whether the derived string from Readable is a valid card index.
+   *
+   * @param input The string from Readable.
+   * @return true if the card index is valid (i.e. can turn into a number) and false otherwise.
+   */
   private boolean isValidCardIndex(String input) {
     /*
     To get a valid card index, you need the following things:
@@ -199,6 +217,12 @@ public class SimpleFreecellController implements FreecellController<ICard> {
     return true;
   }
 
+  /**
+   * Determines whether the derived string from Readable is a valid card pile.
+   *
+   * @param input The string from Readable.
+   * @return true if the card pile is valid (i.e. 'C', 'O', or 'F' and then number).
+   */
   private boolean isValidPileInput(String input) {
     /*
     To get a valid pile input, you need the following things:
@@ -240,7 +264,13 @@ public class SimpleFreecellController implements FreecellController<ICard> {
     return true;
   }
 
-  public PileType getPileType(char c) {
+  /**
+   * Converts the char into a PileType enum.
+   *
+   * @param c The first character from the Readable string provided that it is valid.
+   * @return The PileType to which the character belongs.
+   */
+  private PileType getPileType(char c) {
 
     switch (c) {
       case 'C':

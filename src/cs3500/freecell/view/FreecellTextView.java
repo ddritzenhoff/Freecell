@@ -2,7 +2,6 @@ package cs3500.freecell.view;
 
 import cs3500.freecell.model.FreecellModel;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Represents the ascii view of the card pile within the Freecell card game.
@@ -13,7 +12,7 @@ public class FreecellTextView implements FreecellView {
   private Appendable ap;
 
   /**
-   * Constructs a FreecellModel object
+   * Constructs a FreecellModel object.
    *
    * @param model the FreecellModel game implementation, and the current game state.
    */
@@ -26,6 +25,8 @@ public class FreecellTextView implements FreecellView {
   }
 
   /**
+   * Constructs a FreecellModel object.
+   *
    * @param model the FreecellModel game implementation, and the current game state.
    * @param ap    Appendable object to be used in the game rendering.
    */
@@ -49,49 +50,46 @@ public class FreecellTextView implements FreecellView {
       return "";
     }
 
-    // at this point, you know that the game begun.
-
-    String result = "";
+    StringBuilder builder = new StringBuilder();
 
     // displaying the foundation pile.
     for (int pileIndex = 0; pileIndex < 4; pileIndex++) {
-      result = result + "F" + (pileIndex + 1) + ":";
+      builder.append("F").append(pileIndex + 1).append(":");
 
       for (int cardI = 0; cardI < model.getNumCardsInFoundationPile(pileIndex); cardI++) {
-        result = result + " " + model.getFoundationCardAt(pileIndex, cardI).toString();
+        builder.append(" ").append(model.getFoundationCardAt(pileIndex, cardI).toString());
         if (cardI + 1 != model.getNumCardsInFoundationPile(pileIndex)) {
-          result += ",";
+          builder.append(",");
         }
       }
-      result += "\n";
+      builder.append("\n");
     }
     for (int pileIndex = 0; pileIndex < model.getNumOpenPiles(); pileIndex++) {
-      result = result + "O" + (pileIndex + 1) + ":";
+      builder.append("O").append(pileIndex + 1).append(":");
       // O1:
       if (model.getOpenCardAt(pileIndex) != null) {
-        result += " " + model.getOpenCardAt(pileIndex).toString() + "\n";
+        builder.append(" ").append(model.getOpenCardAt(pileIndex).toString()).append("\n");
         // O1: K♥\n
       } else {
-        result += "\n";
+        builder.append("\n");
         // O1:/n
       }
     }
     for (int pileIndex = 0; pileIndex < model.getNumCascadePiles(); pileIndex++) {
-      result = result + "C" + (pileIndex + 1) + ":";
-
+      builder.append("C").append(pileIndex + 1).append(":");
       for (int cardI = 0; cardI < model.getNumCardsInCascadePile(pileIndex); cardI++) {
-        result = result + " " + model.getCascadeCardAt(pileIndex, cardI).toString();
+        builder.append(" ").append(model.getCascadeCardAt(pileIndex, cardI).toString());
         if (cardI + 1 != model.getNumCardsInCascadePile(pileIndex)) {
-          result += ",";
+          builder.append(",");
         }
       }
 
       if (pileIndex + 1 != model.getNumCascadePiles()) {
-        result += "\n";
+        builder.append("\n");
       }
     }
 
-    return result;
+    return builder.toString();
   }
 
   @Override
