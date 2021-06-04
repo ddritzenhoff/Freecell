@@ -13,10 +13,10 @@ import java.util.Set;
  */
 public class SimpleFreecellModel implements FreecellModel<ICard> {
 
-  private final List<IPile<ICard>> cascadePiles;
-  private final List<IPile<ICard>> openPiles;
-  private final List<IPile<ICard>> foundationPiles;
-  private boolean hasGameStarted;
+  protected final List<IPile<ICard>> cascadePiles;
+  protected final List<IPile<ICard>> openPiles;
+  protected final List<IPile<ICard>> foundationPiles;
+  protected boolean hasGameStarted;
 
   /**
    * Constructs an {@code SimpleFreecellModel} object.
@@ -49,7 +49,7 @@ public class SimpleFreecellModel implements FreecellModel<ICard> {
    * @param deck the list of cards making up the deck.
    * @return true if the deck is invlaid and false if the deck is valid.
    */
-  private boolean isInvalidDeck(List<ICard> deck) {
+  protected boolean isInvalidDeck(List<ICard> deck) {
     // checks to see if there are 52 cards
     if (deck.size() != 52) {
       return true;
@@ -135,7 +135,7 @@ public class SimpleFreecellModel implements FreecellModel<ICard> {
    * @return the pile specified by pile (from which pile) and pileNumber (index of the pile).
    * @throws IllegalArgumentException when the specified pile index is out of bounds.
    */
-  private IPile<ICard> getCorrectPile(PileType pile, int pileNumber)
+  protected IPile<ICard> getCorrectPile(PileType pile, int pileNumber)
       throws IllegalArgumentException {
     switch (pile) {
       case OPEN:
