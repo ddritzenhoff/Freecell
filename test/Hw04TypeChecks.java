@@ -6,7 +6,6 @@
 ////
 
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
@@ -21,9 +20,9 @@ import cs3500.freecell.view.FreecellView;
 import cs3500.freecell.model.FreecellModelCreator;
 
 /**
- * This class is provided to check that your code implements the expected API.
- * If your code compiles with an unmodified version of this class, then it very
- * likely will also compile with the tests that we use to evaluate your code.
+ * This class is provided to check that your code implements the expected API. If your code compiles
+ * with an unmodified version of this class, then it very likely will also compile with the tests
+ * that we use to evaluate your code.
  */
 public class Hw04TypeChecks {
 
@@ -31,35 +30,36 @@ public class Hw04TypeChecks {
   static void checkSignatures() {
     Reader stringReader;
     StringBuffer out;
-    FreecellModel<?> model = FreecellModelCreator.create
-            (FreecellModelCreator.GameType
-            .MULTIMOVE);
+    FreecellModel<?> model = FreecellModelCreator.create(FreecellModelCreator.GameType
+        .MULTIMOVE);
 
     checkNewModel(
-            FreecellModelCreator.create(FreecellModelCreator.GameType
-                    .MULTIMOVE),
-            FreecellModelCreator.create(FreecellModelCreator.GameType.MULTIMOVE)
-                    .getDeck());
+        FreecellModelCreator.create(FreecellModelCreator.GameType
+            .MULTIMOVE),
+        FreecellModelCreator.create(FreecellModelCreator.GameType.MULTIMOVE)
+            .getDeck());
     stringReader = new StringReader("C1 8 F1 q");
     out = new StringBuffer();
     checkNewController(
-            FreecellModelCreator.create(FreecellModelCreator.GameType.SINGLEMOVE),
-            FreecellModelCreator.create(FreecellModelCreator.GameType.SINGLEMOVE)
-                    .getDeck(),
-            new SimpleFreecellController(FreecellModelCreator.create(FreecellModelCreator.GameType.SINGLEMOVE)
-                    ,stringReader, out));
+        FreecellModelCreator.create(FreecellModelCreator.GameType.SINGLEMOVE),
+        FreecellModelCreator.create(FreecellModelCreator.GameType.SINGLEMOVE)
+            .getDeck(),
+        new SimpleFreecellController(
+            FreecellModelCreator.create(FreecellModelCreator.GameType.SINGLEMOVE), stringReader,
+            out));
     checkNewController(
-            FreecellModelCreator.create(FreecellModelCreator.GameType.MULTIMOVE),
-            FreecellModelCreator.create(FreecellModelCreator.GameType.MULTIMOVE)
-                    .getDeck(),
-            new SimpleFreecellController(FreecellModelCreator.create(FreecellModelCreator.GameType.MULTIMOVE)
-                    ,stringReader, out));
+        FreecellModelCreator.create(FreecellModelCreator.GameType.MULTIMOVE),
+        FreecellModelCreator.create(FreecellModelCreator.GameType.MULTIMOVE)
+            .getDeck(),
+        new SimpleFreecellController(
+            FreecellModelCreator.create(FreecellModelCreator.GameType.MULTIMOVE), stringReader,
+            out));
 
   }
 
   // This doesn't really need to be a dynamic method, since it doesn't use `this`
   static <K> void checkNewController(FreecellModel<K> model, List<K> deck,
-                                     FreecellController<K> controller) {
+      FreecellController<K> controller) {
     String input = "4 3";
 
     try {

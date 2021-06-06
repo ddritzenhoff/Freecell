@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The {@code SimpleFreecellModel} class represents the Freecell card game.
+ * The {@code SimpleFreecellModel} class represents the Freecell card game model and handles the
+ * state of the game and its transitions. This particular version only allows the user to move one
+ * card at a time.
  */
 public class SimpleFreecellModel implements FreecellModel<ICard> {
 

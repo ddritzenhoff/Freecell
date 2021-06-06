@@ -16,7 +16,7 @@ import java.util.Scanner;
 public final class SimpleFreecellController implements FreecellController<ICard> {
 
   private final Scanner sc;
-  FreecellModel<ICard> model;
+  private final FreecellModel<ICard> model;
   private final FreecellView view;
 
   /**
@@ -49,6 +49,12 @@ public final class SimpleFreecellController implements FreecellController<ICard>
     this.view = new FreecellTextView(this.model, ap);
   }
 
+  /**
+   * Appends a message to an Appendable object.
+   *
+   * @param message the message to be written to the appendable.
+   * @throws IllegalStateException when writing the to the appendable failed.
+   */
   private void write(String message) {
     try {
       this.view.renderMessage(message);
@@ -59,6 +65,8 @@ public final class SimpleFreecellController implements FreecellController<ICard>
 
   /**
    * Handles adding the game state to the appendable.
+   *
+   * @throws IllegalStateException when writing the to the appendable failed.
    */
   private void writeBoard() {
     try {

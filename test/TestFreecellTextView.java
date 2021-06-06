@@ -53,6 +53,18 @@ public class TestFreecellTextView {
   }
 
   @Test
+  public void testToStringFailedStartGame() {
+
+    SimpleFreecellModel model = new SimpleFreecellModel();
+
+    FreecellView tview = new FreecellTextView(model);
+
+    String finalStr = "";
+
+    assertEquals(finalStr, tview.toString());
+  }
+
+  @Test
   public void testRenderMessage() throws IOException {
     FreecellModel<ICard> model = new SimpleFreecellModel();
     StringBuffer output = new StringBuffer();

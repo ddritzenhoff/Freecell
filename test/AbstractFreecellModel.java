@@ -1,25 +1,27 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import cs3500.freecell.model.FreecellModel;
 import cs3500.freecell.model.PileType;
 import cs3500.freecell.model.hw02.Face;
 import cs3500.freecell.model.hw02.ICard;
 import cs3500.freecell.model.hw02.SimpleFreecellModel;
 import cs3500.freecell.model.hw02.Suite;
+import cs3500.freecell.model.hw04.MultiMoveFreecellModel;
 import java.util.List;
 import org.junit.Test;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 /**
- * This respresents all the tests responsible for the testing the methods of the
- * SimpleFreecellClass.
+ * This respresents all the tests responsible for the testing the methods of the SimpleFreecellModel
+ * and MultiMoveFrecellModel.
  */
-public class TestSimpleFreecellClass {
+public abstract class AbstractFreecellModel {
 
   @Test
   public void testOrderOfGetDeck() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     List<ICard> deck = model.getDeck();
 
     // I am expecting all of the face cards to be created in descending order.
@@ -41,19 +43,19 @@ public class TestSimpleFreecellClass {
 
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidCascadePileSize() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 3, 4, false);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidOpenPileSize() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 0, false);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidDeck() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     List<ICard> deck = model.getDeck();
     deck.remove(deck.size() - 1);
     model.startGame(deck, 4, 4, false);
@@ -61,7 +63,7 @@ public class TestSimpleFreecellClass {
 
   @Test
   public void testMultipleStartGameCalls() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     List<ICard> deck = model.getDeck();
     model.startGame(deck, 5, 2, true);
     assertEquals(model.getNumCascadePiles(), 5);
@@ -71,7 +73,7 @@ public class TestSimpleFreecellClass {
 
   @Test
   public void testIfCardsInRightCascadePileAfterStartGame() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 2, false);
     // with 52 cards and 5 piles, you are expecting the 0th, 5th, 10th, 15th, etc. cards to be
     // in pile 1.
@@ -88,20 +90,36 @@ public class TestSimpleFreecellClass {
 
   @Test(expected = IllegalStateException.class)
   public void testMoveWithoutStartingGame() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.move(PileType.CASCADE, 0, 12, PileType.OPEN, 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testMoveIllegalIndex() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 2, false);
     model.move(PileType.CASCADE, 0, 10, PileType.OPEN, 0);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidMoveToFoundationPile() {
+    FreecellModel<ICard> model = model();
+    model.startGame(model.getDeck(), 4, 2, false);
+    model.move(PileType.CASCADE, 0, 12, PileType.FOUNDATION, 0);
+    model.move(PileType.CASCADE, 1, 12, PileType.FOUNDATION, 0);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidMoveToOpenPile() {
+    FreecellModel<ICard> model = model();
+    model.startGame(model.getDeck(), 4, 2, false);
+    model.move(PileType.CASCADE, 0, 12, PileType.OPEN, 0);
+    model.move(PileType.CASCADE, 1, 12, PileType.OPEN, 0);
+  }
+
   @Test
   public void testSuccessfulMove() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 2, false);
 
     assertSame(Face.ACE, model.getCascadeCardAt(0, 12).getFace());
@@ -115,7 +133,7 @@ public class TestSimpleFreecellClass {
 
   @Test
   public void testIfGameOver() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     assertFalse(model.isGameOver());
 
@@ -138,7 +156,7 @@ public class TestSimpleFreecellClass {
 
   @Test
   public void testGetNumberOfCardsInFoundationPile() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     assertEquals(0, model.getNumCardsInFoundationPile(0));
     model.move(PileType.CASCADE, 0, 12, PileType.FOUNDATION, 0);
@@ -149,20 +167,20 @@ public class TestSimpleFreecellClass {
 
   @Test(expected = IllegalStateException.class)
   public void testGetNumberOfCardsInFoundationPileWithoutGameStarting() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.getNumCardsInFoundationPile(0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetNumberOfCardsInFoundationPileWithWrongIndex() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 2, false);
     model.getNumCardsInFoundationPile(5);
   }
 
   @Test
   public void testGetNumberOfCardsInFoundationPileSuccessful() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
 
     for (int ii = 0; ii < 52; ii++) {
@@ -181,7 +199,7 @@ public class TestSimpleFreecellClass {
 
   @Test
   public void testGetNumCascadePiles() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     assertEquals(-1, model.getNumCascadePiles());
     model.startGame(model.getDeck(), 4, 1, false);
     assertEquals(4, model.getNumCascadePiles());
@@ -189,20 +207,20 @@ public class TestSimpleFreecellClass {
 
   @Test(expected = IllegalStateException.class)
   public void testGetNumCardsInCascadePileGameNotStarted() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.getNumCardsInCascadePile(0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetNumCardsInCascadePileNoSuchIndex() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     model.getNumCardsInCascadePile(-1);
   }
 
   @Test
   public void testGetNumCardsInCascadePile() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     assertEquals(13, model.getNumCardsInCascadePile(0));
     model.move(PileType.CASCADE, 0, 12, PileType.OPEN, 0);
@@ -211,20 +229,20 @@ public class TestSimpleFreecellClass {
 
   @Test(expected = IllegalStateException.class)
   public void testGetNumCardsInOpenPileGameNotStarted() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.getNumCardsInOpenPile(0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetNumCardsInOpenPileNoSuchIndex() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     model.getNumCardsInOpenPile(-1);
   }
 
   @Test
   public void testGetNumCardsInOpenPileSuccessful() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     assertEquals(0, model.getNumCardsInOpenPile(0));
     model.move(PileType.CASCADE, 0, 12, PileType.OPEN, 0);
@@ -233,7 +251,7 @@ public class TestSimpleFreecellClass {
 
   @Test
   public void testGetNumOpenPiles() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     assertEquals(-1, model.getNumOpenPiles());
     model.startGame(model.getDeck(), 4, 1, false);
     assertEquals(1, model.getNumOpenPiles());
@@ -241,27 +259,27 @@ public class TestSimpleFreecellClass {
 
   @Test(expected = IllegalStateException.class)
   public void testGetFoundationCardAtGameNotStarted() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.getFoundationCardAt(0, 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetFoundationCardAtNoSuchIndexPile() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     model.getFoundationCardAt(-1, 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetFoundationCardAtNoSuchIndexCard() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     model.getFoundationCardAt(0, 20);
   }
 
   @Test
   public void testGetFoundationCardAtSuccessful() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
 
     for (int ii = 0; ii < 4; ii++) {
@@ -282,27 +300,27 @@ public class TestSimpleFreecellClass {
 
   @Test(expected = IllegalStateException.class)
   public void testGetCascadeCardGameNotStarted() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.getCascadeCardAt(0, 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetCascadeCardNoSuchIndexPile() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     model.getCascadeCardAt(-1, 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetCascadeCardNoSuchIndexCard() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     model.getCascadeCardAt(0, 20);
   }
 
   @Test
   public void testGetCascadeCardAtSuccessful() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
 
     assertEquals(Face.TWO, model.getCascadeCardAt(0, 11).getFace());
@@ -314,20 +332,20 @@ public class TestSimpleFreecellClass {
 
   @Test(expected = IllegalStateException.class)
   public void testGetOpenCardAtGameNotStarted() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.getOpenCardAt(0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetOpenCardAtNoSuchIndexPile() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
     model.getOpenCardAt(5);
   }
 
   @Test
   public void getOpenCardAtSuccessful() {
-    SimpleFreecellModel model = new SimpleFreecellModel();
+    FreecellModel<ICard> model = model();
     model.startGame(model.getDeck(), 4, 1, false);
 
     assertEquals(Face.ACE, model.getCascadeCardAt(0, 12).getFace());
@@ -336,4 +354,34 @@ public class TestSimpleFreecellClass {
     assertEquals(Face.ACE, model.getOpenCardAt(0).getFace());
     assertEquals(Suite.HEART, model.getOpenCardAt(0).getSuite());
   }
+
+  /**
+   * Responsible for getting the correct FreecellModel implementation to be tested.
+   *
+   * @return returns the correct FreecellModel implementation to be tested.
+   */
+  protected abstract FreecellModel<ICard> model();
+
+  /**
+   * Used to construct and run the SimpleFreecell version of the tests.
+   */
+  public static final class SimpleFreecellModelTest extends AbstractFreecellModel {
+
+    @Override
+    protected FreecellModel<ICard> model() {
+      return new SimpleFreecellModel();
+    }
+  }
+
+  /**
+   * Used to construct and run the MultiMoveFreecell version of the tests.
+   */
+  public static final class MultiMoveFreecellModelTest extends AbstractFreecellModel {
+
+    @Override
+    protected FreecellModel<ICard> model() {
+      return new MultiMoveFreecellModel();
+    }
+  }
+
 }

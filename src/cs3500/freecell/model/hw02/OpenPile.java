@@ -18,7 +18,7 @@ public class OpenPile implements IPile<ICard> {
   public void pushCard(ICard card) {
 
     if (this.card != null) {
-      throw new IllegalStateException("there is already a card here");
+      throw new IllegalArgumentException("there is already a card here");
     }
 
     this.card = card;
@@ -28,7 +28,7 @@ public class OpenPile implements IPile<ICard> {
   public void popCard() {
 
     if (this.card == null) {
-      throw new IllegalStateException("there isn't a card to remove");
+      throw new IllegalArgumentException("there isn't a card to remove");
     }
 
     this.card = null;
